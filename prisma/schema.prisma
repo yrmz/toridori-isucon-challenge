@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DB_URL")
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  account_name String    @map("account_name") @db.VarChar(64)
+  passhash     String    @map("passhash") @db.VarChar(128)
+  authority    Boolean   @map("authority")
+  del_flg      Boolean   @map("del_flg")
+  created_at   DateTime  @default(now()) @map("created_at") @db.DateTime(6)
+  Post         Post[]
+  Comment      Comment[]
+
+  @@map("users")
+}
+
+model Post {
+  id         Int      @id @default(autoincrement())
+  user_id    Int      @map("user_id")
+  mime       String   @map("mime") @db.VarChar(64)
+  imgdata    Bytes    @map("imgdata") @db.MediumBlob
+  body       String   @map("body") @db.Text
+  created_at DateTime @default(now()) @map("created_at") @db.DateTime(6)
+
+  user    User      @relation(fields: [user_id], references: [id])
+  Comment Comment[]
+
+  @@map("posts")
+}
+
+model Comment {
+  id         Int      @id @default(autoincrement())
+  post_id    Int      @map("post_id")
+  user_id    Int      @map("user_id")
+  comment    String   @map("comment") @db.Text
+  created_at DateTime @default(now()) @map("created_at") @db.DateTime(6)
+
+  post Post @relation(fields: [post_id], references: [id])
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("comments")
+}

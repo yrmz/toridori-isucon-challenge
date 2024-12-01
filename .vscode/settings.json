@@ -1,0 +1,21 @@
+{
+  "cSpell.words": [
+    "autoincrement",
+    "datasource",
+    "imgdata",
+    "isucon",
+    "nestjs",
+    "passhash",
+    "resave",
+    "toridori",
+    "tseslint"
+  ],
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "biomejs.biome",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports.biome": "explicit"
+  },
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  }
+}
